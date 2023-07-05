@@ -14,7 +14,7 @@ Service responsible for compressing (gzip) files within an harvesting job.
     logging: *default-logging
 ```
 - Add to your config/delta/rules.js:
-```json
+```js
 {
     match: {
       predicate: {
