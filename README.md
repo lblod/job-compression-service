@@ -36,7 +36,7 @@ Service responsible for compressing (gzip) files within an harvesting job.
       ignoreFromSelf: true,
       optOutMuScopeIds: ['http://redpencil.data.gift/id/concept/muScope/deltas/initialSync'],
     },
-  },
+  }
 ```
 - Add to your job controller config:
 ```json
@@ -44,5 +44,5 @@ Service responsible for compressing (gzip) files within an harvesting job.
         "currentOperation": "http://lblod.data.gift/id/jobs/concept/TaskOperation/checking-urls",
         "nextOperation": "http://lblod.data.gift/id/jobs/concept/TaskOperation/compressFiles",
         "nextIndex": "9"
-      }
+  }
 ```
