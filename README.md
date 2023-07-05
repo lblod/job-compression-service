@@ -35,7 +35,7 @@ Service responsible for compressing (gzip) files within an harvesting job.
       gracePeriod: 1000,
       ignoreFromSelf: true,
       optOutMuScopeIds: ['http://redpencil.data.gift/id/concept/muScope/deltas/initialSync'],
-    },
+    }
   }
 ```
 - Add to your job controller config:
