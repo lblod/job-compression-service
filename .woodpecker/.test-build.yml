@@ -1,0 +1,9 @@
+pipeline:
+  build:
+    image: plugins/docker
+    settings:
+      repo: lblod/job-compression-service
+      dry_run: true
+when:
+  event:
+    - pull_request
