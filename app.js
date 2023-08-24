@@ -27,11 +27,21 @@ app.post('/delta', async function(req, res, next) {
     }
 
     for (let entry of entries) {
-      if (! await isTask(entry)) continue;
+      console.log('getting entry ', entry);
+
+      if (! await isTask(entry)) {
+        console.log('entry is not a task, continue');
+        continue;
+      }
+      console.log('load task');
+
       const task = await loadTask(entry);
 
+      console.log('task loaded: ', task);
       if (isCompressingTask(task)) {
         await run(task);
+      } else {
+        console.log('not a compression task');
       }
     }
 
