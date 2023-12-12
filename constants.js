@@ -34,3 +34,5 @@ export const TASK_COMPRESSING =
 
 export const HIGH_LOAD_DATABASE_ENDPOINT =
   process.env.HIGH_LOAD_DATABASE_ENDPOINT || "http://virtuoso:8890/sparql";
+export const DEFAULT_GRAPH =
+  process.env.DEFAULT_GRAPH || "http://mu.semte.ch/graphs/harvesting";
