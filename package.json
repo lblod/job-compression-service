@@ -1,6 +1,6 @@
 {
   "name": "job-compression-service",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "GZIP result files ",
   "author": "redpencil.io",
   "license": "MIT",
