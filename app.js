@@ -1,52 +1,55 @@
-import { app, errorHandler } from 'mu';
+import { app, errorHandler } from "mu";
 import { Delta } from "./lib/delta";
-import {
-  STATUS_SCHEDULED,
-  TASK_COMPRESSING
-} from './constants';
-import { run } from './lib/pipeline-compressing';
-import { isTask, loadTask } from './lib/task';
-import bodyParser from 'body-parser';
+import { STATUS_SCHEDULED, TASK_COMPRESSING } from "./constants";
+import { run } from "./lib/pipeline-compressing";
+import { isTask, loadTask } from "./lib/task";
+import bodyParser from "body-parser";
 
-app.use(bodyParser.json({
-  type: function(req) {
-    return /^application\/json/.test(req.get('content-type'));
-  }
-}));
+app.use(
+  bodyParser.json({
+    type: function(req) {
+      return /^application\/json/.test(req.get("content-type"));
+    },
+  }),
+);
 
-app.get('/', function(_, res) {
-  res.send('Hello harvesting-compressing');
+app.get("/", function(_, res) {
+  res.send("Hello harvesting-compressing");
 });
 
-app.post('/delta', async function(req, res, next) {
+app.post("/delta", async function(req, res, next) {
   try {
-    const entries = new Delta(req.body).getInsertsFor('http://www.w3.org/ns/adms#status', STATUS_SCHEDULED);
+    const entries = new Delta(req.body).getInsertsFor(
+      "http://www.w3.org/ns/adms#status",
+      STATUS_SCHEDULED,
+    );
     if (!entries.length) {
-      console.log('Delta dit not contain potential tasks that are interesting, awaiting the next batch!');
+      console.log(
+        "Delta dit not contain potential tasks that are interesting, awaiting the next batch!",
+      );
       return res.status(204).send();
     }
 
     for (let entry of entries) {
-      console.log('getting entry ', entry);
+      console.log("getting entry ", entry);
 
-      if (! await isTask(entry)) {
-        console.log('entry is not a task, continue');
+      if (!(await isTask(entry))) {
+        console.log("entry is not a task, continue");
         continue;
       }
-      console.log('load task');
+      console.log("load task");
 
       const task = await loadTask(entry);
 
-      console.log('task loaded: ', task);
+      console.log("task loaded: ", task);
       if (isCompressingTask(task)) {
-        await run(task);
+        run(task);
       } else {
-        console.log('not a compression task');
+        console.log("not a compression task");
       }
     }
 
     return res.status(200).send().end();
-
   } catch (e) {
     console.log(`Something unexpected went wrong while handling delta task!`);
     console.error(e);
